@@ -1,33 +1,39 @@
 <script>
-    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
-    import logo from '../lib/images/logo.svg';
+	import '../app.postcss';
+	import { Button, Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode, Avatar } from 'flowbite-svelte';
+	import logo from '../lib/images/logo.svg';
+    import avatar from '../lib/images/avatar.svg';
 </script>
 
 <Navbar let:hidden let:toggle>
-    <NavBrand href="/">
-      <img src="{logo}" style="aspect-ratio:1/1;width:2vw;height:2vw;" alt="Flowbite Logo" />
-      <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
-    </NavBrand>
-    <NavHamburger on:click={toggle} />
-    <NavUl {hidden}>
-      <NavLi href="/">Home</NavLi>
-      <NavLi href="/about">About</NavLi>
-      <NavLi href="/docs/components/navbar">Navbar</NavLi>
-      <NavLi href="/pricing">Pricing</NavLi>
-      <NavLi href="/contact">Contact</NavLi>
-    </NavUl>
+	<NavBrand href="/">
+		<img src={logo} class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span
+		>
+        <DarkMode style="margin-left:10px;"></DarkMode>
+	</NavBrand>
+    
+	<NavHamburger on:click={toggle} />
+	<NavUl {hidden}>
+		<NavLi href="/">Home</NavLi>
+		<NavLi href="/about">About</NavLi>
+		<NavLi href="/docs/components/navbar">Navbar</NavLi>
+        
+	</NavUl>
+    <Button>LeaderBoard</Button>
+    <Avatar src="{avatar}" style="background-color:#111827;" rounded />
 </Navbar>
 <div>
-    <slot />
+	<slot />
 </div>
 
 <style>
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        font-family: ubuntu;
-    }
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100vh;
+		font-family: ubuntu;
+	}
 </style>
