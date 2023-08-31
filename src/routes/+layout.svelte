@@ -8,16 +8,13 @@
 <Navbar let:hidden let:toggle>
 	<NavBrand href="/">
 		<img src={logo} class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span
-		>
-        <DarkMode style="margin-left:10px;"></DarkMode>
+		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
 	</NavBrand>
-    
+    <DarkMode></DarkMode>
+
 	<NavHamburger on:click={toggle} />
 	<NavUl {hidden}>
-		<NavLi href="/">Home</NavLi>
-		<NavLi href="/about">About</NavLi>
-		<NavLi href="/docs/components/navbar">Navbar</NavLi>
+		<NavLi href="/Benchmark">Benchmark</NavLi>
         
 	</NavUl>
     <Button>LeaderBoard</Button>
