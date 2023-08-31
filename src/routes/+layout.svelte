@@ -1,13 +1,12 @@
 <script>
-	// import '../app.postcss';
-    import Form from './form.svelte';
+	import '../app.postcss';
+    import * as Form from './Form.svelte';
 	import { Button, Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode, Avatar } from 'flowbite-svelte';
 	import logo from '../lib/images/logo.svg';
     import avatar from '../lib/images/avatar.svg';
     let page = 0;
     function page0() {page = 0;}
     function page1() {page = 1;}
-
 </script>
 
 <Navbar let:hidden let:toggle>
@@ -30,7 +29,7 @@
         <slot />
     {/if}
     {#if page==1}
-        <From />
+        <Form.default />
     {/if}
 </div>
 
