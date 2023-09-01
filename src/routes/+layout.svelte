@@ -1,7 +1,7 @@
 <script>
 	import '../app.postcss';
     import * as Form from './Form.svelte';
-	import { Button, Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode, Avatar } from 'flowbite-svelte';
+	import { Rating, Button, Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode, Avatar } from 'flowbite-svelte';
 	import logo from '../lib/images/logo.svg';
     import avatar from '../lib/images/avatar.svg';
     let page = 0;
@@ -9,11 +9,13 @@
     function page1() {page = 1;}
 </script>
 
-<Navbar let:hidden let:toggle>
-	<NavBrand on:click={page0}>
-		<img src={logo} class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
-	</NavBrand>
+<Navbar style="margin-bottom:1%;" let:hidden let:toggle>
+	<button on:click={page0}>
+        <NavBrand>
+                <img src={logo} class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
+        </NavBrand>
+    </button>
     <DarkMode></DarkMode>
 
 	<NavHamburger on:click={toggle} />
@@ -39,7 +41,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		height: 100vh;
+		height: 100%;
 		font-family: ubuntu;
 	}
 </style>

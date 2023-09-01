@@ -1,5 +1,14 @@
 <script>
-    import { Rating, AdvancedRating, ScoreRating, Textarea, Label, Input, Select, Button, Toggle, A } from 'flowbite-svelte';
+    import { AdvancedRating, ScoreRating, Textarea, Label, Input, Select, Button, Toggle, A } from 'flowbite-svelte';
+    import { Icon } from 'flowbite-svelte-icons';
+    import Rating from './rating.svelte';
+    import rating from './rating.svelte';
+    import { starss } from './stores.js';
+
+    let star;
+	starss.subscribe((value) => {
+		star = value;
+	});
 
     let types = [
         { value: 'bed', name: 'Bedslinger' },
@@ -51,6 +60,7 @@
             alert("Submitted")
         }
     }
+    
 </script>
 <div>
     <center>
@@ -62,7 +72,9 @@
                 <Input bind:value={form.comp} id="company" placeholder="Company" />
             </div>
             <div class="sameline mb-6">
-                <Input bind:value={form.cost} id="cost" placeholder="Cost" />
+                <Input min="1" type="number" bind:value={form.cost} id="cost" placeholder="Cost">
+                    <Icon name="dollar-solid" slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                </Input>
             </div>
             <Label>
                 <div class="sameline">
@@ -80,25 +92,25 @@
                 <br>
                 {#if form.type == 'delta'}
                     <div class="sameline mb-6" style="margin-top:10px;">
-                        <Input type="number" bind:value={form.diam} id="diam" class="w-40" placeholder="Diameter" />
+                        <Input min="1" type="number" bind:value={form.diam} id="diam" class="w-40" placeholder="Diameter" />
                     </div>
                     <div class="sameline mb-6">
-                        <Input type="number" bind:value={form.hmm} id="zmm" class="w-40" placeholder="Hightmm" />
+                        <Input min="1" type="number" bind:value={form.hmm} id="zmm" class="w-40" placeholder="Hightmm" />
                     </div>
                 {/if}
                 {#if form.type != 'delta'}
-                <div class="sameline mb-6" style="margin-top:10px;">
-                    <Input type="number" bind:value={form.xmm} id="xmm" class="w-40" placeholder="xmm" />
-                </div>
-                <div class="sameline mb-6">
-                    <Input type="number" bind:value={form.ymm} id="ymm" class="w-40" placeholder="ymm" />
-                </div>
-                <div class="sameline mb-6">
-                    <Input type="number" bind:value={form.zmm} id="zmm" class="w-40" placeholder="zmm" />
-                </div>
+                    <div class="sameline mb-6" style="margin-top:10px;">
+                        <Input min="1" type="number" bind:value={form.xmm} id="xmm" class="w-40" placeholder="xmm" />
+                    </div>
+                    <div class="sameline mb-6">
+                        <Input min="1" type="number" bind:value={form.ymm} id="ymm" class="w-40" placeholder="ymm" />
+                    </div>
+                    <div class="sameline mb-6">
+                        <Input min="1" type="number" bind:value={form.zmm} id="zmm" class="w-40" placeholder="zmm" />
+                    </div>
                 {/if}
                 <div class="mb-6">
-                    <Input type="number" bind:value={form.flow} id="flow" class="w-40" placeholder="flow mm" />
+                    <Input min="1" type="number" bind:value={form.flow} id="flow" class="w-40" placeholder="flow mm" />
                 </div>
             </Label>
             <br>
@@ -144,10 +156,14 @@
             </div>
             <br>
             <Label>
-                <Textarea class="w-1/2" placeholder="Other comments (problems, special features)" rows="4" />
+                Star Rating
+                <Rating />
             </Label>
             <br>
-            <Button on:click={submitF} style="margin-top:20px;">Submit</Button>
+            <Label>
+                <Textarea class="w-1/2" placeholder="Other comments (problems, special features)" rows="4" />
+            </Label>
+            <Button on:click={submitF} style="margin-top:20px;margin-bottom:50px;">Submit</Button>
         {/if}
         {#if submited}
             <h1>Thank You For Submitting</h1>
