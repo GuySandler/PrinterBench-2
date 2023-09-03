@@ -1,11 +1,28 @@
 <script>
-    import { AdvancedRating, ScoreRating, Textarea, Label, Input, Select, Button, Toggle, A } from 'flowbite-svelte';
+    import { Textarea, Label, Input, Select, Button, Toggle, A } from 'flowbite-svelte';
     import { Icon } from 'flowbite-svelte-icons';
     import Rating from './rating.svelte';
-    import rating from './rating.svelte';
     import { starss } from './stores.js';
+    import { PUBLIC_VITE_FIREKEY } from '$env/static/public';
+    alert(PUBLIC_VITE_FIREKEY)
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    import { getFirestore, addDoc, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+    const firebaseConfig = {
+        apiKey: PUBLIC_VITE_FIREKEY,
+        authDomain: "printerbench2.firebaseapp.com",
+        projectId: "printerbench2",
+        storageBucket: "printerbench2.appspot.com",
+        messagingSenderId: "661761044534",
+        appId: "1:661761044534:web:c84431d35b5c8db35ba897",
+        measurementId: "G-L67B7KZEYH"
+    };
 
-    let star;
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore();
+
+    let star = null;
 	starss.subscribe((value) => {
 		star = value;
 	});
@@ -33,7 +50,8 @@
         { value: 'hmm', name: 1 },
         { value: 'diam', name: 1 },
         { value: 'flow', name: 1 },
-        { value: 'cost', name: 1 }
+        { value: 'cost', name: 1 },
+        { value: 'comment', name: ''}
     ]
     let Features = [
         { value: 'FS', name: false },
@@ -51,18 +69,53 @@
     function submitF() {
         if (form.name == '' || form.comp == '' ||
          form.cost == '' || form.type == '' ||
-          form.firm == '' || form.xmm == '' ||
-           form.ymm == '' || form.zmm == '' ||
-            form.flow == '') {
+          form.firm == '' || form.flow == '' || 
+          star == null) {
+            if (form.type == 'delta') {
+                if (form.diam == '' || form.hmm == '') {
+                    alert('Please fill all the fields');
+                }
+            } else {
+                if (form.xmm == '' || form.ymm == '' || form.zmm == '') {
+                    alert('Please fill all the fields');
+                }
+            }
             alert('Please fill all the fields');
         } else {
             submited = true;
-            alert("Submitted")
+            Upload();
         }
     }
-    
+    function Upload() {
+        addDoc(collection(db, "review"), {
+            name: form.name,
+            company: form.comp,
+            cost: form.cost,
+            type: form.type,
+            firmware: form.firm,
+            x: form.xmm,
+            y: form.ymm,
+            z: form.zmm,
+            h: form.hmm,
+            d: form.diam,
+            flow: form.flow,
+            comment: form.comment,
+            stars: star,
+            FS: Features.FS,
+            Enc: Features.Enc,
+            Cam: Features.Cam,
+            IS: Features.IS,
+            ABL: Features.ABL,
+            OS: Features.OS,
+            AFL: Features.AFL,
+            MC: Features.MC,
+            CS: Features.CS,
+            DD: Features.DD
+        })
+    }
 </script>
 <div>
+    <!-- <h1>{}</h1> -->
     <center>
         {#if !submited}
             <div class="sameline mb-6">
@@ -119,38 +172,38 @@
                     Features
                     <br>
                     <div class="left sameline mb-6">
-                        <Toggle bind:value={form.FS} class="cursor-pointer sameline">Filament Sensor</Toggle>
+                        <Toggle bind:checked={Features.FS} class="cursor-pointer sameline">Filament Sensor</Toggle>
                     </div>
                     <div class="right sameline mb-6">
-                        <Toggle bind:value={form.Enc} class="cursor-pointer mt-3 sameline">Enclosure</Toggle>
+                        <Toggle bind:checked={Features.Enc} class="cursor-pointer mt-3 sameline">Enclosure</Toggle>
                     </div>
                     <br>
                     <div class="left sameline mb-6">
-                        <Toggle bind:value={form.Cam} class="cursor-pointer mt-3 sameline">Camera</Toggle>
+                        <Toggle bind:checked={Features.Cam} class="cursor-pointer mt-3 sameline">Camera</Toggle>
                     </div>
                     <div class="right sameline mb-6">
-                        <Toggle bind:value={form.IS} class="cursor-pointer mt-3">Input Shaping</Toggle>
+                        <Toggle bind:checked={Features.IS} class="cursor-pointer mt-3">Input Shaping</Toggle>
                     </div>
                     <br>
                     <div class="left sameline mb-6">
-                        <Toggle bind:value={form.ABL} class="cursor-pointer mt-3">Auto Bed Leveling</Toggle>
+                        <Toggle bind:checked={Features.ABL} class="cursor-pointer mt-3">Auto Bed Leveling</Toggle>
                     </div>
                     <div class="right sameline mb-6">
-                        <Toggle bind:value={form.OS} class="cursor-pointer mt-3">Open Source</Toggle>
+                        <Toggle bind:checked={Features.OS} class="cursor-pointer mt-3">Open Source</Toggle>
                     </div>
                     <br>
                     <div class="left sameline mb-6">
-                        <Toggle bind:value={form.AFL} class="cursor-pointer mt-3">Auto First Layer</Toggle>
+                        <Toggle bind:checked={Features.AFL} class="cursor-pointer mt-3">Auto First Layer</Toggle>
                     </div>
                     <div class="right sameline mb-6">
-                        <Toggle bind:value={form.MC} class="cursor-pointer mt-3">Multicolor</Toggle>
+                        <Toggle bind:checked={Features.MC} class="cursor-pointer mt-3">Multicolor</Toggle>
                     </div>
                     <br>
                     <div class="left sameline mb-6">
-                        <Toggle bind:value={form.CS} class="cursor-pointer mt-3">Cloud Services/Remote Access</Toggle>
+                        <Toggle bind:checked={Features.CS} class="cursor-pointer mt-3">Cloud Services/Remote Access</Toggle>
                     </div>
                     <div class="right sameline mb-6">
-                        <Toggle bind:value={form.DD} class="cursor-pointer mt-3">Direct Drive</Toggle>
+                        <Toggle bind:checked={Features.DD} class="cursor-pointer mt-3">Direct Drive</Toggle>
                     </div>
                 </Label>
             </div>
@@ -161,14 +214,13 @@
             </Label>
             <br>
             <Label>
-                <Textarea class="w-1/2" placeholder="Other comments (problems, special features)" rows="4" />
+                <Textarea bind:value={form.comment} class="w-1/2" placeholder="Other comments (problems, special features)" rows="4" />
             </Label>
             <Button on:click={submitF} style="margin-top:20px;margin-bottom:50px;">Submit</Button>
         {/if}
         {#if submited}
             <h1>Thank You For Submitting</h1>
         {/if}
-        <slot/>
     </center>
 </div>
 <style>
