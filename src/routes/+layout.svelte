@@ -1,12 +1,15 @@
 <script>
 	import '../app.postcss';
-    import * as Form from './Form.svelte';
+    import Form from './Form.svelte';
+    import LeaderBoard from './Leaderboard.svelte';
 	import { Rating, Button, Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode, Avatar } from 'flowbite-svelte';
 	import logo from '../lib/images/logo.svg';
     import avatar from '../lib/images/avatar.svg';
+	import Leaderboard from './Leaderboard.svelte';
     let page = 0;
     function page0() {page = 0;}
     function page1() {page = 1;}
+    function page2() {page = 2;}
 </script>
 
 <Navbar style="margin-bottom:1%;" let:hidden let:toggle>
@@ -23,15 +26,18 @@
 		<NavLi class="cursor-pointer" on:click={page1}>Benchmark</NavLi>
         
 	</NavUl>
-    <Button>LeaderBoard</Button>
+    <Button on:click={page2}>LeaderBoard</Button>
     <Avatar src="{avatar}" style="background-color:#111827;" rounded />
 </Navbar>
 <div>
 	{#if page==0}
         <slot />
-    {/if}
-    {#if page==1}
-        <Form.default />
+    {:else if page==1}
+        <Form />
+    {:else if page==2}
+        <Leaderboard />
+    {:else}
+        <h1>ERROR: Page not found</h1>
     {/if}
 </div>
 

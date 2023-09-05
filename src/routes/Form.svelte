@@ -4,7 +4,6 @@
     import Rating from './rating.svelte';
     import { starss } from './stores.js';
     import { PUBLIC_VITE_FIREKEY } from '$env/static/public';
-    alert(PUBLIC_VITE_FIREKEY)
     import { initializeApp } from "firebase/app";
     import { getAnalytics } from "firebase/analytics";
     import { getFirestore, addDoc, collection, getDocs, doc, setDoc } from 'firebase/firestore';
@@ -163,7 +162,7 @@
                     </div>
                 {/if}
                 <div class="mb-6">
-                    <Input min="1" type="number" bind:value={form.flow} id="flow" class="w-40" placeholder="flow mm" />
+                    <Input min="1" type="number" bind:value={form.flow} id="flow" class="w-40" placeholder="printing speed (mm)" />
                 </div>
             </Label>
             <br>
